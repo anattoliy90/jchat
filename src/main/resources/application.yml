@@ -1,0 +1,16 @@
+jchat:
+  token:
+    access:
+      lifetime: 1200
+      secret: access-secret
+    refresh:
+      lifetime: 86400
+      secret: secret-secret
+  upload-path: /Users/anatoliys/Desktop/projects/jchat/upload
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jchat?currentSchema=jchat
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: false
