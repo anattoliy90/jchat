@@ -28,6 +28,11 @@ public class AuthService {
     public JwtResponse login(@NonNull JwtRequest authRequest) throws AuthException {
         final UserEntity user = userService.findByEmail(authRequest.getEmail())
                 .orElseThrow(() -> new AuthException("User not found"));
+
+        if (!user.getConfirmed()) {
+            throw new AuthException("Email " + user.getEmail() + " is not confirmed");
+        }
+
         if (user.getPassword().equals(authRequest.getPassword())) {
             final String accessToken = jwtProvider.generateAccessToken(user);
             final String refreshToken = jwtProvider.generateRefreshToken(user);
@@ -49,6 +54,7 @@ public class AuthService {
                 return new JwtResponse(accessToken, null);
             }
         }
+
         return new JwtResponse(null, null);
     }
 
@@ -66,6 +72,7 @@ public class AuthService {
                 return new JwtResponse(accessToken, newRefreshToken);
             }
         }
+
         throw new AuthException("Invalid JWT token");
     }
 
