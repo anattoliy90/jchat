@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS jchat.users (
     email VARCHAR NOT NULL UNIQUE,
     password VARCHAR NOT NULL,
     is_confirmed BOOLEAN NOT NULL,
+    activation_code VARCHAR,
     created TIMESTAMP NOT NULL DEFAULT now(),
     updated TIMESTAMP NOT NULL DEFAULT now(),
     CONSTRAINT pkey_user_id PRIMARY KEY (id)

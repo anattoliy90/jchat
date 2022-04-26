@@ -1,4 +1,5 @@
 jchat:
+  url: http://localhost:8080
   token:
     access:
       lifetime: 1200
@@ -12,5 +13,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/jchat?currentSchema=jchat
     username: postgres
     password: postgres
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    username: anattoliy90@yandex.ru
+    password: tyybbjnseknmissb
+    protocol: smtps
   jpa:
     show-sql: false

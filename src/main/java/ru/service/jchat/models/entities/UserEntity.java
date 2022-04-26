@@ -30,6 +30,9 @@ public class UserEntity extends BaseEntity {
     @Column(name = "is_confirmed")
     private Boolean isConfirmed = false;
 
+    @Column(name = "activation_code")
+    private String activationCode;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_roles",
@@ -93,6 +96,14 @@ public class UserEntity extends BaseEntity {
 
     public void setConfirmed(Boolean confirmed) {
         isConfirmed = confirmed;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 
     public Set<RoleEntity> getRoles() {

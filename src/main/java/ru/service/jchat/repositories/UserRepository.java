@@ -15,6 +15,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByEmail(String email);
 
+    Boolean existsByEmail(String email);
+
+    Optional<UserEntity> findByActivationCode(String code);
+
     @Query("select u from UserEntity u " +
             "where (:firstName is null or u.firstName like concat ('%', :firstName, '%'))"
             + " and (:lastName is null or u.lastName like concat('%', :lastName, '%'))")

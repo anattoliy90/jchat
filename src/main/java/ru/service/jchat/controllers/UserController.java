@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @PostMapping(path = "/add")
+    @PostMapping(path = Constants.SING_UP)
     public UserDTO add(@Valid @RequestBody UserCreateRequest request) {
         return userService.add(request);
     }
@@ -71,5 +71,10 @@ public class UserController {
     @PostMapping(path = "/{id}/change/password")
     public String changePassword(@PathVariable("id") Long id, @Valid @RequestBody PasswordChangeRequest request) throws Exception {
         return userService.changePassword(id, request);
+    }
+
+    @PostMapping(Constants.ACTIVATION + "/{code}")
+    public String activate(@PathVariable String code) {
+        return userService.activate(code);
     }
 }

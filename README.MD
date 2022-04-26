@@ -16,12 +16,9 @@
 
 ### Список задач
 
+- swagger
 - авторизация/регистрация
   - ролевка: админ, юзер
-  - подтверждение емейла
-    - создание конфига яндекс почты
-    - регистрация с подтверждением через почту
-- swagger
 - chats
   - контроллер зайти/выйти из чата
   - add - добавить в setUsers и setAdmins пользователя создавшего чат, использовать jwt токен
@@ -131,6 +128,12 @@ http://localhost:8080/api/v1/users/1/change/password
     "oldPassword": "12345678",
     "newPassword": "87654321"
 }
+```
+
+activation (POST)
+
+```
+http://localhost:8080/api/v1/users/activation/7f8f2437-30e5-47a0-89c5-c7bb3020e0e1
 ```
 
 ### Chats
