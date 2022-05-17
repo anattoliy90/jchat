@@ -11,4 +11,6 @@ public class Constants {
     public final static String ACTIVATION = "/activation";
     public final static String CHATS = API + "/chats";
     public final static String MESSAGES = API + "/messages";
+    public final static String SWAGGER_UI = "/swagger-ui";
+    public final static String SWAGGER_API_DOCS = "/v3/api-docs";
 }

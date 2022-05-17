@@ -1,5 +1,8 @@
 package ru.service.jchat.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +18,7 @@ import javax.security.auth.message.AuthException;
 
 @RestController
 @RequestMapping(path = Constants.AUTH)
+@Tag(name="Контроллер для работы с jwt токеном")
 public class AuthController {
     private final AuthService authService;
 
@@ -23,18 +27,21 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Авторизация")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest authRequest) throws AuthException {
         final JwtResponse token = authService.login(authRequest);
         return ResponseEntity.ok(token);
     }
 
     @PostMapping("/newAccessToken")
+    @Operation(summary = "Получить новый access токен")
     public ResponseEntity<JwtResponse> getNewAccessToken(@RequestBody RefreshJwtRequest request) throws AuthException {
         final JwtResponse token = authService.getAccessToken(request.getRefreshToken());
         return ResponseEntity.ok(token);
     }
 
     @PostMapping("/refreshTokens")
+    @Operation(summary = "Получить новые access и refresh токены", security = @SecurityRequirement(name = "jwtAuth"))
     public ResponseEntity<JwtResponse> getNewRefreshToken(@RequestBody RefreshJwtRequest request) throws AuthException {
         final JwtResponse token = authService.refresh(request.getRefreshToken());
         return ResponseEntity.ok(token);

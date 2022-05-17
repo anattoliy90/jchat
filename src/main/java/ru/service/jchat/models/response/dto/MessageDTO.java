@@ -8,15 +8,15 @@ public class MessageDTO {
     private final Long id;
     private final UserEntity user;
     private final String text;
-    private final Boolean isPinned;
+    private final Boolean pinned;
     private final ZonedDateTime created;
     private final ZonedDateTime updated;
 
-    public MessageDTO(Long id, UserEntity user, String text, Boolean isPinned, ZonedDateTime created, ZonedDateTime updated) {
+    public MessageDTO(Long id, UserEntity user, String text, Boolean pinned, ZonedDateTime created, ZonedDateTime updated) {
         this.id = id;
         this.user = user;
         this.text = text;
-        this.isPinned = isPinned;
+        this.pinned = pinned;
         this.created = created;
         this.updated = updated;
     }
@@ -34,7 +34,7 @@ public class MessageDTO {
     }
 
     public Boolean getPinned() {
-        return isPinned;
+        return pinned;
     }
 
     public ZonedDateTime getCreated() {

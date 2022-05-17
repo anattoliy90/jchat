@@ -6,7 +6,7 @@ public class MessageUpdateRequest {
     @NotBlank(message = "Message text cannot be empty!")
     private String text;
 
-    private Boolean isPinned = false;
+    private Boolean pinned = false;
 
     public String getText() {
         return text;
@@ -17,10 +17,10 @@ public class MessageUpdateRequest {
     }
 
     public Boolean getPinned() {
-        return isPinned;
+        return pinned;
     }
 
     public void setPinned(Boolean pinned) {
-        isPinned = pinned;
+        pinned = pinned;
     }
 }

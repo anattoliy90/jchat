@@ -27,8 +27,8 @@ public class UserEntity extends BaseEntity {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "is_confirmed")
-    private Boolean isConfirmed = false;
+    @Column(name = "confirmed")
+    private Boolean confirmed = false;
 
     @Column(name = "activation_code")
     private String activationCode;
@@ -91,11 +91,11 @@ public class UserEntity extends BaseEntity {
     }
 
     public Boolean getConfirmed() {
-        return isConfirmed;
+        return confirmed;
     }
 
     public void setConfirmed(Boolean confirmed) {
-        isConfirmed = confirmed;
+        confirmed = confirmed;
     }
 
     public String getActivationCode() {

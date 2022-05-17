@@ -32,7 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Constants.LOGIN,
                         Constants.NEW_ACCESS_TOKEN,
                         Constants.USERS + Constants.SING_UP,
-                        Constants.USERS + Constants.ACTIVATION + "/*"
+                        Constants.USERS + Constants.ACTIVATION + "/*",
+                        Constants.SWAGGER_UI + "/**",
+                        Constants.SWAGGER_API_DOCS + "/**"
                 ).permitAll()
                 .anyRequest().authenticated()
                 .and()

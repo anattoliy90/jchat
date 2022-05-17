@@ -24,7 +24,7 @@ public class ChatEntity extends BaseEntity {
     private ChatTypeEntity chatType = ChatTypeEntity.PRIVATE;
 
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Where(clause = "is_pinned = true")
+    @Where(clause = "pinned = true")
     private List<MessageEntity> pinnedMessage;
 
     @ManyToMany(fetch = FetchType.LAZY)

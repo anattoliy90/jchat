@@ -13,7 +13,7 @@ public class UserUpdateRequest {
     @NotBlank(message = "Email cannot be empty")
     private String email;
 
-    private Boolean isConfirmed = false;
+    private Boolean confirmed = false;
 
     public String getFirstName() {
         return firstName;
@@ -40,10 +40,10 @@ public class UserUpdateRequest {
     }
 
     public Boolean getConfirmed() {
-        return isConfirmed;
+        return confirmed;
     }
 
     public void setConfirmed(Boolean confirmed) {
-        isConfirmed = confirmed;
+        confirmed = confirmed;
     }
 }

@@ -21,8 +21,8 @@ public class MessageEntity extends BaseEntity {
     @Column(name = "text")
     private String text;
 
-    @Column(name = "is_pinned")
-    private Boolean isPinned = false;
+    @Column(name = "pinned")
+    private Boolean pinned = false;
 
     public Long getId() {
         return id;
@@ -57,10 +57,10 @@ public class MessageEntity extends BaseEntity {
     }
 
     public Boolean getPinned() {
-        return isPinned;
+        return pinned;
     }
 
     public void setPinned(Boolean pinned) {
-        isPinned = pinned;
+        pinned = pinned;
     }
 }
