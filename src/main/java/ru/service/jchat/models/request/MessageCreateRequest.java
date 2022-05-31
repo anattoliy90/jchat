@@ -1,7 +1,6 @@
 package ru.service.jchat.models.request;
 
 import ru.service.jchat.models.entities.ChatEntity;
-import ru.service.jchat.models.entities.UserEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

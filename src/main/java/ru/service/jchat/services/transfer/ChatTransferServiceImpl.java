@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.isNull;
+
 @Service
 public class ChatTransferServiceImpl implements ChatTransferService {
     private final MessageTransferService messageTransferService;
@@ -20,7 +22,11 @@ public class ChatTransferServiceImpl implements ChatTransferService {
     }
 
     public ChatDTO chatToDto(ChatEntity chat) {
-        List<MessageDTO> pinnedMessages = chat.getPinnedMessage().stream().map(messageTransferService::messageToDto).collect(Collectors.toList());
+        List<MessageDTO> pinnedMessages = new ArrayList<>();
+
+        if (!isNull(chat.getPinnedMessage())) {
+            pinnedMessages = chat.getPinnedMessage().stream().map(messageTransferService::messageToDto).collect(Collectors.toList());
+        }
 
         return new ChatDTO(
                 chat.getId(),
@@ -39,7 +45,11 @@ public class ChatTransferServiceImpl implements ChatTransferService {
         List<ChatDTO> chatList = new ArrayList<>();
 
         for (ChatEntity item : chats) {
-            List<MessageDTO> pinnedMessages = item.getPinnedMessage().stream().map(messageTransferService::messageToDto).collect(Collectors.toList());
+            List<MessageDTO> pinnedMessages = new ArrayList<>();
+
+            if (!isNull(item.getPinnedMessage())) {
+                pinnedMessages = item.getPinnedMessage().stream().map(messageTransferService::messageToDto).collect(Collectors.toList());
+            }
 
             ChatDTO chatDTO = new ChatDTO(
                     item.getId(),

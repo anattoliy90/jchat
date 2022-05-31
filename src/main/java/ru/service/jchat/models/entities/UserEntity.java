@@ -2,6 +2,7 @@ package ru.service.jchat.models.entities;
 
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -112,5 +113,18 @@ public class UserEntity extends BaseEntity {
 
     public void setRoles(Set<RoleEntity> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return id.equals(that.id) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(avatar, that.avatar) && email.equals(that.email) && password.equals(that.password) && Objects.equals(confirmed, that.confirmed) && Objects.equals(activationCode, that.activationCode) && Objects.equals(roles, that.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, avatar, email, password, confirmed, activationCode, roles);
     }
 }

@@ -4,8 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.service.jchat.config.Constants;
 import ru.service.jchat.jwt.JwtAuthentication;
@@ -21,7 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = Constants.MESSAGES)
-@Tag(name="Контроллер для работы с сообщениями")
+@Tag(name = "Контроллер для работы с сообщениями")
 public class MessageController {
     private final MessageService messageService;
     private final AuthService authService;
@@ -54,7 +52,6 @@ public class MessageController {
         return messageService.update(id, request);
     }
 
-    @ResponseBody
     @DeleteMapping(path = "/{id}")
     @Operation(summary = "Удалить сообщение", security = @SecurityRequirement(name = "jwtAuth"))
     public void delete(@PathVariable("id") Long id) {

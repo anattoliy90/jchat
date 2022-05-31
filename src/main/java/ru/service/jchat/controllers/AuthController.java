@@ -18,7 +18,7 @@ import javax.security.auth.message.AuthException;
 
 @RestController
 @RequestMapping(path = Constants.AUTH)
-@Tag(name="Контроллер для работы с jwt токеном")
+@Tag(name = "Контроллер для работы с jwt токеном")
 public class AuthController {
     private final AuthService authService;
 

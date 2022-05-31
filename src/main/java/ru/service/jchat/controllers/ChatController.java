@@ -3,10 +3,13 @@ package ru.service.jchat.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.service.jchat.config.Constants;
+import ru.service.jchat.jwt.JwtAuthentication;
 import ru.service.jchat.models.request.ChatRequest;
 import ru.service.jchat.models.response.dto.ChatDTO;
+import ru.service.jchat.services.AuthService;
 import ru.service.jchat.services.ChatService;
 
 import javax.validation.Valid;
@@ -14,12 +17,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = Constants.CHATS)
-@Tag(name="Контроллер для работы с чатами")
+@Tag(name = "Контроллер для работы с чатами")
 public class ChatController {
     private final ChatService chatService;
+    private final AuthService authService;
 
-    public ChatController(ChatService chatService) {
+    public ChatController(ChatService chatService, AuthService authService) {
         this.chatService = chatService;
+        this.authService = authService;
     }
 
     @ResponseBody
@@ -33,9 +38,12 @@ public class ChatController {
     @PostMapping(path = "/add")
     @Operation(summary = "Добавить чат", security = @SecurityRequirement(name = "jwtAuth"))
     public ChatDTO add(@Valid @RequestBody ChatRequest request) {
-        return chatService.add(request);
+        final JwtAuthentication authInfo = authService.getAuthInfo();
+
+        return chatService.add(request, authInfo);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseBody
     @PutMapping(path = "/{id}")
     @Operation(summary = "Изменить чат", security = @SecurityRequirement(name = "jwtAuth"))
@@ -43,7 +51,6 @@ public class ChatController {
         return chatService.update(id, request);
     }
 
-    @ResponseBody
     @DeleteMapping(path = "/{id}")
     @Operation(summary = "Удалить чат", security = @SecurityRequirement(name = "jwtAuth"))
     public void delete(@PathVariable("id") Long id) {
@@ -55,5 +62,21 @@ public class ChatController {
     @Operation(summary = "Поиск чата по названию", security = @SecurityRequirement(name = "jwtAuth"))
     public List<ChatDTO> search(@PathVariable String title) {
         return chatService.search(title);
+    }
+
+    @PostMapping("/join/{id}")
+    @Operation(summary = "Присоединиться к чату", security = @SecurityRequirement(name = "jwtAuth"))
+    public void join(@PathVariable("id") Long id) throws Exception {
+        final JwtAuthentication authInfo = authService.getAuthInfo();
+
+        chatService.join(id, authInfo);
+    }
+
+    @PostMapping("/leave/{id}")
+    @Operation(summary = "Покинуть к чату", security = @SecurityRequirement(name = "jwtAuth"))
+    public void leave(@PathVariable("id") Long id) throws Exception {
+        final JwtAuthentication authInfo = authService.getAuthInfo();
+
+        chatService.leave(id, authInfo);
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = Constants.USERS)
-@Tag(name="Контроллер для работы с пользователями")
+@Tag(name = "Контроллер для работы с пользователями")
 public class UserController {
     private final UserService userService;
 
@@ -47,7 +47,6 @@ public class UserController {
         return userService.update(id, request);
     }
 
-    @ResponseBody
     @DeleteMapping(path = "/{id}")
     @Operation(summary = "Удаление пользователя", security = @SecurityRequirement(name = "jwtAuth"))
     public void delete(@PathVariable("id") Long id) {
