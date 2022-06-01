@@ -3,6 +3,7 @@ package ru.service.jchat.services;
 import org.springframework.stereotype.Service;
 import ru.service.jchat.jwt.JwtAuthentication;
 import ru.service.jchat.models.entities.ChatEntity;
+import ru.service.jchat.models.entities.ChatTypeEntity;
 import ru.service.jchat.models.entities.UserEntity;
 import ru.service.jchat.models.request.ChatRequest;
 import ru.service.jchat.models.response.dto.ChatDTO;
@@ -104,6 +105,9 @@ public class ChatService {
 
     public void addUserToChat(Long chatId, Long userId) throws Exception {
         ChatEntity chat = chatRepository.findById(chatId).orElseThrow(() -> new EntityNotFoundException("Chat with id " + chatId + " not found"));
+
+        isGroup(chat);
+
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found!"));
         List<UserEntity> userList = chat.getUsers();
 
@@ -120,6 +124,9 @@ public class ChatService {
 
     public void deleteUserFromChat(Long chatId, Long userId, JwtAuthentication authInfo) throws Exception {
         ChatEntity chat = chatRepository.findById(chatId).orElseThrow(() -> new EntityNotFoundException("Chat with id " + chatId + " not found"));
+
+        isGroup(chat);
+
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found!"));
         List<UserEntity> userList = chat.getUsers();
 
@@ -178,5 +185,11 @@ public class ChatService {
         chat.setAdmins(admins);
 
         chatRepository.save(chat);
+    }
+
+    private void isGroup(ChatEntity chat) throws Exception {
+        if (chat.getChatType() != ChatTypeEntity.GROUP) {
+            throw new Exception("Chat is not group");
+        }
     }
 }
