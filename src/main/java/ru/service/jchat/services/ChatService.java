@@ -14,6 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ChatService {
@@ -97,6 +98,84 @@ public class ChatService {
         userList.remove(user);
 
         chat.setUsers(userList);
+
+        chatRepository.save(chat);
+    }
+
+    public void addUserToChat(Long chatId, Long userId) throws Exception {
+        ChatEntity chat = chatRepository.findById(chatId).orElseThrow(() -> new EntityNotFoundException("Chat with id " + chatId + " not found"));
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found!"));
+        List<UserEntity> userList = chat.getUsers();
+
+        if (userList.contains(user)) {
+            throw new Exception("User is already in the chat");
+        }
+
+        userList.add(user);
+
+        chat.setUsers(userList);
+
+        chatRepository.save(chat);
+    }
+
+    public void deleteUserFromChat(Long chatId, Long userId, JwtAuthentication authInfo) throws Exception {
+        ChatEntity chat = chatRepository.findById(chatId).orElseThrow(() -> new EntityNotFoundException("Chat with id " + chatId + " not found"));
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found!"));
+        List<UserEntity> userList = chat.getUsers();
+
+        if (!userList.contains(user)) {
+            throw new Exception("User is not in the chat");
+        }
+
+        if (Objects.equals(user.getEmail(), authInfo.getPrincipal())) {
+            throw new Exception("You can't delete yourself from chat");
+        }
+
+        userList.remove(user);
+
+        chat.setUsers(userList);
+
+        chatRepository.save(chat);
+    }
+
+    public void makeUserAdmin(Long chatId, Long userId) throws Exception {
+        ChatEntity chat = chatRepository.findById(chatId).orElseThrow(() -> new EntityNotFoundException("Chat with id " + chatId + " not found"));
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found!"));
+        List<UserEntity> userList = chat.getUsers();
+        List<UserEntity> admins = chat.getAdmins();
+
+        if (admins.contains(user)) {
+            throw new Exception("User is already admin");
+        }
+
+        if (!userList.contains(user)) {
+            throw new Exception("User is not in the chat");
+        }
+
+        admins.add(user);
+
+        chat.setAdmins(admins);
+
+        chatRepository.save(chat);
+    }
+
+    public void makeUserNotAdmin(Long chatId, Long userId, JwtAuthentication authInfo) throws Exception {
+        ChatEntity chat = chatRepository.findById(chatId).orElseThrow(() -> new EntityNotFoundException("Chat with id " + chatId + " not found"));
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found!"));
+        List<UserEntity> admins = chat.getAdmins();
+        List<UserEntity> userList = chat.getUsers();
+
+        if (Objects.equals(user.getEmail(), authInfo.getPrincipal())) {
+            throw new Exception("You can't make yourself no admin");
+        }
+
+        if (!userList.contains(user)) {
+            throw new Exception("User is not in the chat");
+        }
+
+        admins.remove(user);
+
+        chat.setAdmins(admins);
 
         chatRepository.save(chat);
     }

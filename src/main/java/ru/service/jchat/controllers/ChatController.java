@@ -43,7 +43,7 @@ public class ChatController {
         return chatService.add(request, authInfo);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("@secureValidationService.validateChatAdmin(#id)")
     @ResponseBody
     @PutMapping(path = "/{id}")
     @Operation(summary = "Изменить чат", security = @SecurityRequirement(name = "jwtAuth"))
@@ -78,5 +78,37 @@ public class ChatController {
         final JwtAuthentication authInfo = authService.getAuthInfo();
 
         chatService.leave(id, authInfo);
+    }
+
+    @PreAuthorize("@secureValidationService.validateChatAdmin(#chatId)")
+    @PostMapping(path = "/{chatId}/add/user/{userId}")
+    @Operation(summary = "Добавить пользователя в чат", security = @SecurityRequirement(name = "jwtAuth"))
+    public void addUserToChat(@PathVariable("chatId") Long chatId, @PathVariable("userId") Long userId) throws Exception {
+        chatService.addUserToChat(chatId, userId);
+    }
+
+    @PreAuthorize("@secureValidationService.validateChatAdmin(#chatId)")
+    @PostMapping(path = "/{chatId}/delete/user/{userId}")
+    @Operation(summary = "Удалить пользователя из чата", security = @SecurityRequirement(name = "jwtAuth"))
+    public void deleteUserFromChat(@PathVariable("chatId") Long chatId, @PathVariable("userId") Long userId) throws Exception {
+        final JwtAuthentication authInfo = authService.getAuthInfo();
+
+        chatService.deleteUserFromChat(chatId, userId, authInfo);
+    }
+
+    @PreAuthorize("@secureValidationService.validateChatAdmin(#chatId)")
+    @PostMapping(path = "/{chatId}/make/admin/{userId}")
+    @Operation(summary = "Сделать пользователя админом", security = @SecurityRequirement(name = "jwtAuth"))
+    public void makeUserAdmin(@PathVariable("chatId") Long chatId, @PathVariable("userId") Long userId) throws Exception {
+        chatService.makeUserAdmin(chatId, userId);
+    }
+
+    @PreAuthorize("@secureValidationService.validateChatAdmin(#chatId)")
+    @PostMapping(path = "/{chatId}/make/not/admin/{userId}")
+    @Operation(summary = "Сделать пользователя не админом", security = @SecurityRequirement(name = "jwtAuth"))
+    public void makeUserNotAdmin(@PathVariable("chatId") Long chatId, @PathVariable("userId") Long userId) throws Exception {
+        final JwtAuthentication authInfo = authService.getAuthInfo();
+
+        chatService.makeUserNotAdmin(chatId, userId, authInfo);
     }
 }

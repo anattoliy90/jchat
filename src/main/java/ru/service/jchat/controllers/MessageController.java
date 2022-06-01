@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.service.jchat.config.Constants;
 import ru.service.jchat.jwt.JwtAuthentication;
@@ -48,14 +49,18 @@ public class MessageController {
     @ResponseBody
     @PutMapping(path = "/{id}")
     @Operation(summary = "Обновить сообщение", security = @SecurityRequirement(name = "jwtAuth"))
-    public MessageDTO update(@PathVariable("id") Long id, @Valid @RequestBody MessageUpdateRequest request) {
-        return messageService.update(id, request);
+    public MessageDTO update(@PathVariable("id") Long id, @Valid @RequestBody MessageUpdateRequest request) throws Exception {
+        final JwtAuthentication authInfo = authService.getAuthInfo();
+
+        return messageService.update(id, request, authInfo);
     }
 
     @DeleteMapping(path = "/{id}")
     @Operation(summary = "Удалить сообщение", security = @SecurityRequirement(name = "jwtAuth"))
-    public void delete(@PathVariable("id") Long id) {
-        messageService.delete(id);
+    public void delete(@PathVariable("id") Long id) throws Exception {
+        final JwtAuthentication authInfo = authService.getAuthInfo();
+
+        messageService.delete(id, authInfo);
     }
 
     @ResponseBody
@@ -70,5 +75,12 @@ public class MessageController {
     @Operation(summary = "Закрепить сообщение", security = @SecurityRequirement(name = "jwtAuth"))
     public MessageDTO pin(@PathVariable Long id, @Valid @RequestBody MessagePinRequest request) {
         return messageService.pin(id, request);
+    }
+
+    @PreAuthorize("@secureValidationService.validateChatAdmin(#chatId)")
+    @PostMapping(path = "/{messageId}/delete/from/chat/{chatId}")
+    @Operation(summary = "Удалить сообщение из чата", security = @SecurityRequirement(name = "jwtAuth"))
+    public void deleteMessageFromChat(@PathVariable("messageId") Long messageId, @PathVariable("chatId") Long chatId) throws Exception {
+        messageService.deleteMessageFromChat(messageId, chatId);
     }
 }

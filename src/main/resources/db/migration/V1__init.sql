@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS jchat.chat_users (
     chat_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
     CONSTRAINT pkey_chat_users PRIMARY KEY (chat_id, user_id),
-    CONSTRAINT fk_chat_users_chat_id FOREIGN KEY (chat_id) REFERENCES chats(id),
+    CONSTRAINT fk_chat_users_chat_id FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE,
     CONSTRAINT fk_chat_users_user_id FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
@@ -83,6 +83,6 @@ CREATE TABLE IF NOT EXISTS jchat.chat_admins (
     chat_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
     CONSTRAINT pkey_chat_admins PRIMARY KEY (chat_id, user_id),
-    CONSTRAINT fk_chat_admins_chat_id FOREIGN KEY (chat_id) REFERENCES chats(id),
+    CONSTRAINT fk_chat_admins_chat_id FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE,
     CONSTRAINT fk_chat_admins_user_id FOREIGN KEY (user_id) REFERENCES users(id)
 );
